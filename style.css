@@ -6,7 +6,7 @@ body {
 }
 
 .calendar {
-  --calendar-width-size: 300px;
+  --calendar-width-size: 350px;
   --calenadar-font-size: 16px;
   margin-top: 10px;
 }
@@ -72,6 +72,17 @@ body {
 }
 
 .calendar-grid {
+  padding: 15px 10px;
+}
+.grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+}
+
+.day,
+.pre-date,
+.cur-date,
+.today,
+.next-date {
+  padding: 10px;
 }
