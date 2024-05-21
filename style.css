@@ -5,6 +5,16 @@ body {
   background-color: #f2f4f6;
 }
 
+.title {
+  color: #dd6b3d;
+  font-weight: 300;
+}
+
+.select-date {
+  padding: 5px;
+}
+
+/* calendar */
 .calendar {
   --calendar-width-size: 350px;
   --calenadar-font-size: 16px;
@@ -18,26 +28,29 @@ body {
   border-radius: 15px;
   box-shadow: 0 0 15px #a5a5a5;
 }
+.hide {
+  display: none;
+}
 
+/* calendar-nav */
 .calendar-nav {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   text-align: center;
   align-items: center;
+  padding: 0px 10px;
   background-color: #3bba6d;
   color: white;
   border-radius: 10px 10px 0 0;
 }
-
 .nav-month-year {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 10px;
 }
-
-.prev,
-.next {
+#prev,
+#next {
   width: 30px;
   height: 30px;
   position: relative;
@@ -48,7 +61,7 @@ body {
   background-color: transparent;
   cursor: pointer;
 }
-.prev::after {
+#prev::after {
   content: '';
   width: 0;
   height: 0;
@@ -59,7 +72,7 @@ body {
   position: relative;
   margin-left: 5px;
 }
-.next::after {
+#next::after {
   content: '';
   width: 0;
   height: 0;
@@ -71,18 +84,39 @@ body {
   margin-left: 5px;
 }
 
+/* calendar-grid */
 .calendar-grid {
   padding: 15px 10px;
 }
 .grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+  overflow: hidden;
 }
-
 .day,
 .pre-date,
 .cur-date,
 .today,
 .next-date {
   padding: 10px;
+  cursor: pointer;
+  overflow: hidden;
+}
+.cur-date:nth-child(7n + 1) {
+  color: red;
+}
+.pre-date,
+.next-date {
+  color: lightgray;
+}
+.today {
+  border: 1px solid #3bba6d;
+  border-radius: 50px;
+  font-weight: bold;
+}
+.select {
+  background: #3bba6d;
+  color: #fff;
+  border-radius: 50%;
+  font-weight: bold;
 }

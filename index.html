@@ -8,18 +8,24 @@
     <script src="./calendar.js" type="module" defer></script>
   </head>
   <body>
-    <h1>Date Picker</h1>
     <div class="date-picker">
-      <input type="text" placeholder="Select date" readonly />
+      <h1 class="title">Date Picker</h1>
+      <input
+        id="input-box"
+        class="select-date"
+        type="text"
+        placeholder="Select date"
+        readonly
+      />
       <div class="calendar">
-        <div class="calendar-container">
+        <div class="calendar-container hide">
           <div class="calendar-nav">
-            <button class="prev" type="button"></button>
+            <button id="prev" type="button"></button>
             <div class="nav-month-year">
               <span class="nav-month">month</span>
               <span class="nav-year">year</span>
             </div>
-            <button class="next" type="button"></button>
+            <button id="next" type="button"></button>
           </div>
           <div class="calendar-grid">
             <div class="days grid">

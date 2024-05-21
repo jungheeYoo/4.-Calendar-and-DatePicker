@@ -1,14 +1,11 @@
-const calendarGrid = document.querySelector('.calendar-grid .dates');
-const monthElement = document.querySelector('.nav-month-year .month');
-const yearElement = document.querySelector('.nav-month-year .year');
-const prevButton = document.querySelector('.prev');
-const nextButton = document.querySelector('.next');
+const calendarCon = document.querySelector('.calendar-container');
+const selectDate = document.querySelector('.select-date');
+const calendarNav = document.querySelector('.calendar-nav');
 
-const date = new Date();
+let date = new Date();
 let currentMonth = date.getMonth();
 let currentYear = date.getFullYear();
-console.log(currentMonth);
-console.log(currentYear);
+let clicked = false;
 
 const months = [
   'January',
@@ -26,17 +23,10 @@ const months = [
 ];
 
 const renderCalendar = () => {
-  // 1일 시작 요일,
   const firstDay = new Date(currentYear, currentMonth, 1).getDay();
-  console.log(firstDay);
-  // 이번 달 마지막 날짜, 요일
   const lastDate = new Date(currentYear, currentMonth + 1, 0).getDate();
   const lastDay = new Date(currentYear, currentMonth, lastDate).getDay();
-  console.log(lastDate);
-  console.log(lastDay);
-  // 지난 달 마지막 날짜
   const lastDayOfLastMonth = new Date(currentYear, currentMonth, 0).getDate();
-  console.log(lastDayOfLastMonth);
 
   const navMonth = document.querySelector('.nav-month');
   const navYear = document.querySelector('.nav-year');
@@ -62,22 +52,84 @@ const renderCalendar = () => {
     day.innerText = i;
     day.classList.add('cur-date');
     dates.append(day);
-    //오늘 표시
+
     if (
-      i - firstDay + 1 === date.getDate() &&
-      currentMonth === date.getMonth()
+      i === date.getDate() &&
+      currentMonth === date.getMonth() &&
+      currentYear === date.getFullYear()
     ) {
       day.classList.add('today');
     }
   }
 
-  //현재달에 다음달 불러오기
+  //현재 달에 다음달 불러오기
   for (let i = lastDay; i < 6; i++) {
     const day = document.createElement('div');
     day.classList.add('next-date');
     day.innerText = i - lastDay + 1;
     dates.append(day);
   }
+
+  showSelectDate(currentMonth, currentYear, dates);
 };
 
-renderCalendar();
+// 버튼 클릭 시 네브에 년,월 업데이트
+const updateDate = (e) => {
+  if (e.target.tagName !== 'BUTTON') return;
+  e.target.id === 'prev' ? currentMonth-- : currentMonth++;
+
+  // 1월 보다 작거나(이전년도), 12월 보다 큰 경우(다음년도)
+  if (currentMonth < 0 || currentMonth > 11) {
+    date = new Date(currentYear, currentMonth);
+    currentYear = date.getFullYear();
+    currentMonth = date.getMonth();
+  } else {
+    date = new Date();
+  }
+
+  renderCalendar();
+};
+
+// 날짜 선택 시 인풋에 보여주기
+const showSelectDate = (month, year, dates) => {
+  dates.addEventListener('click', (e) => {
+    if (
+      e.target.matches('.pre-date') ||
+      e.target.matches('.next-date') ||
+      e.target === dates
+    )
+      return;
+
+    const days = [...dates.children];
+    days.forEach((day) => day.classList?.remove('select'));
+    e.target.classList.add('select');
+
+    const day = e.target.innerText;
+    selectDate.value = `${year}-${month + 1}-${day}`;
+  });
+};
+
+// 날짜 선택 창 클릭 시 달력 보이기
+const showCalendar = (e) => {
+  e.stopPropagation();
+  if (clicked) {
+    calendarCon.classList.add('hide');
+  } else {
+    calendarCon.classList.remove('hide');
+  }
+  clicked = !clicked;
+};
+
+//캘린더외에 다른영역이 클릭되면 숨기기
+const hideCalendar = (e) => {
+  if (!calendarCon.contains(e.target) && !selectDate.contains(e.target)) {
+    calendarCon.classList.add('hide');
+    clicked = false;
+  }
+};
+
+renderCalendar(currentMonth, currentYear);
+
+calendarNav.addEventListener('click', updateDate);
+selectDate.addEventListener('click', showCalendar);
+document.addEventListener('click', hideCalendar);
